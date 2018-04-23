@@ -16,7 +16,7 @@ public class Map {
     private BufferedReader bufferedReader;
     private Coordinates coordinates;
     private String line = "";
-    private String cvsSplit = ";";
+    private String csvSplit = ";";
     private String [] tab;
     int x;
     int y;
@@ -24,16 +24,16 @@ public class Map {
 
 
 
-    public void load() throws FileExecption {
+    public void load() throws FileException {
         try {
             if (file.exists()) {
                 bufferedReader = new BufferedReader(new FileReader(file));
                 while ((line = bufferedReader.readLine()) != null) {
 
-                    tab = line.split(cvsSplit);
+                    tab = line.split(csvSplit);
 
-                    for (int i = 0; i < tab.length; i++) {
-                            points.add(tab[i]);
+                    for (int i = 0; i < tab.length; i++) {  // i += 2 or i++
+                            points.add(tab[i]);             //if csvSplit == "," -> points.add(tab[i] + "," + tab[i+1]) else if csvSplit == ";" -> points.add(tab[i])
                             //System.out.println("if");
                             System.out.println(tab[i]);
                         }
@@ -41,7 +41,7 @@ public class Map {
                     }
                     //System.out.println("while");
                 } else {
-                throw new FileExecption("Not found!");
+                throw new FileException("Not found!");
                 }
         }catch (IOException e){
 

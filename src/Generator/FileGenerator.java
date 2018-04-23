@@ -4,8 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalTime;
-import java.time.LocalDate;
+import java.time.*;
 import java.util.logging.Logger;
 import java.util.Random;
 
@@ -15,13 +14,11 @@ public class FileGenerator {
     private BoxGenerator boxGenerator = new BoxGenerator();
     private Logger logger = Logger.getLogger(FileGenerator.class.getName());
 
-    private LocalDate localDate;
-    private LocalTime localTime;
+    private static Instant epoch;
+
     private String name = new String();
     private String load = new String();
     private String line = new String();
-    private String date = new String();
-    private String time = new String();
 
     private Random rand = new Random();
     private int count;
@@ -44,13 +41,10 @@ public class FileGenerator {
                 BufferedWriter bw = new BufferedWriter(fw);
 
                 for (int i = 1; i <= count; i++) {
-                    localDate = LocalDate.now();
-                    localTime = LocalTime.now();
+                    epoch = Instant.now();
                     name = driverGenerator.generate();
                     load = boxGenerator.generate(maxBoxes, width, height);
-                    date = localDate.toString();
-                    time = localTime.getHour() + ":" + localTime.getMinute();
-                    line = date + ";" + time + ";" + name + ";" + load + "\r\n";
+                    line = epoch.toString() + ";" + name + ";" + load + "\r\n";
                     bw.write(line);
                 }
 
