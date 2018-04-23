@@ -7,6 +7,7 @@ public class Report {
     private ArrayList<Driver>drivers;
 
     public Report(ArrayList<Driver> drivers) {
+
         this.drivers = drivers;
     }
 }

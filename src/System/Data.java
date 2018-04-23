@@ -28,7 +28,7 @@ public class Data {
 
 
 
-    public void load() throws FileException {
+    public void load(Map cityMap) throws FileException {
         try {
             if (file.exists()) {
                 bufferedReader = new BufferedReader(new FileReader(file));
@@ -50,7 +50,7 @@ public class Data {
 
                         //if driver does not exist
                         if (newDriver){
-                            drivers.add(new Driver(tab[1]));
+                            drivers.add(new Driver(tab[1]), cityMap);
                             drivers.get(drivers.size() - 1).addRoute(tab);
                             newDriver = false;
                         }

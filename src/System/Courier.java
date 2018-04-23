@@ -19,9 +19,9 @@ public class Courier {
         }
 
         try {
-            data.load();
+            data.load(map);
         } catch (FileException e) {
-            logger.warning(e.getMessage()));
+            logger.warning(e.getMessage());
         }
     }
 }

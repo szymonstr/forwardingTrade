@@ -22,7 +22,9 @@ public class Map {
     int y;
 
 
-
+    public ArrayList<String> getPoints() {
+        return points;
+    }
 
     public void load() throws FileException {
         try {
@@ -47,4 +49,6 @@ public class Map {
 
         }
     }
+
+
 }
