@@ -31,6 +31,6 @@ public class Driver {
 
     public void addRoute(String [] tab){
 
-        routes.add(new Route(tab), map);
+        routes.add(new Route(tab, map));
     }
 }

@@ -21,7 +21,7 @@ public class BoxGenerator {
             if (i == (maxBoxes - 1)) {
                 load = load + coordinates;
             }else{
-                load = load + coordinates + ";";
+                load = load + coordinates + ",";
             }
         }
 

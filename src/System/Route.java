@@ -1,6 +1,12 @@
+/**
+ * TO DO
+ * algorithms to calculate distance and time
+ * getters distances and times
+ *
+ */
+
 package System;
 
-import java.time.*;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -17,18 +23,20 @@ public class Route {
     private int time_alg2;
     private int time_alg3;
 
-    private Instant epoch;
     private String [] data;
     private String [] points;
     private String dateTime;
     private String [] xy = new String[2];
+    private String point = new String();
     private Map map;
     private int checkPoints = 0;
     private String split = ",";
+    private long epoch;
 
     public Route(String[] data, Map cityMap) {
         this.data = data;
         this.map = cityMap;
+        this.epoch = Long.parseLong(data[0]);
         this.PrepareData();
         this.CheckPointsOnMap();
         this.ChangeDataToCoordinates();
@@ -36,19 +44,26 @@ public class Route {
 
     }
 
+    public long getEpoch() {
+        return epoch;
+    }
+
     //prepare data to calculate the route
     private void PrepareData(){
         this.dateTime = this.data[0];
-        this.points = new String[data.length - 2];
+        this.points = new String[(data.length - 2)/2];
         for (int i = 0; i < this.points.length; i++){
-            this.points[i] = this.data[i+2];
+            this.points[i] = this.data[2*i+2].replace('(', ' ') +","+ this.data[2*i+3].replace(')',' ');
+            this.points[i] = this.points[i].trim();
+            //System.out.println(points[i]);
         }
     }
 
+    //checking boxes coordinates with points on map
     private void CheckPointsOnMap(){
         for (int k=0 ; k < map.getPoints().size(); k++){
             for (int i = 0; i < points.length; i++){
-                if (map.getPoints().get(k).equals(points[i])){
+                if (map.getPoints().get(k).equals("(" + points[i] + ")")){
                     checkPoints++;
                 }
             }
@@ -60,19 +75,19 @@ public class Route {
 
     private void ChangeDataToCoordinates(){
         for (int i= 0; i < points.length; i++){
-            points[i].replace('(','');
-            points[i].replace(')','');
             xy = points[i].split(split);
-            coordinates.add(new Coordinates(Integer.parseInt(xy[0]), Integer.parseInt(xy[1]));
+            coordinates.add(new Coordinates(Integer.parseInt(xy[0]), Integer.parseInt(xy[1])));
         }
     }
 
     private void ChangeMapToCoordinates(){
         for (int i =0; i< map.getPoints().size(); i++){
-            map.getPoints().get(i).replace('(','');
-            map.getPoints().get(i).replace(')','');
-            xy = map.getPoints().get(i).split(split);
-            mapCoordinates.add(new Coordinates(Integer.parseInt(xy[0]), Integer.parseInt(xy[1]));
+            point = map.getPoints().get(i);
+            point = point.replace('(', ' ');
+            point = point.replace(')', ' ');
+            point = point.trim();
+            xy = point.split(split);
+            mapCoordinates.add(new Coordinates(Integer.parseInt(xy[0]), Integer.parseInt(xy[1])));
         }
     }
 

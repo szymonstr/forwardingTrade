@@ -32,7 +32,7 @@ public class MapGenerator {
                     if (x==width){
                         line = line + coordinates + "\r\n";
                     }else{
-                        line = line + coordinates + ";";
+                        line = line + coordinates + ",";
                     }
                     bw.write(line);  //write coordinates to file
                     line = "";

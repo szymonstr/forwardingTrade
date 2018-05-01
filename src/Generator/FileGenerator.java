@@ -14,7 +14,7 @@ public class FileGenerator {
     private BoxGenerator boxGenerator = new BoxGenerator();
     private Logger logger = Logger.getLogger(FileGenerator.class.getName());
 
-    private static Instant epoch;
+
 
     private String name = new String();
     private String load = new String();
@@ -22,6 +22,7 @@ public class FileGenerator {
 
     private Random rand = new Random();
     private int count;
+    private long epoch;
 
     private String path = "./DATA.csv";
     private File file = new File(path);
@@ -41,10 +42,10 @@ public class FileGenerator {
                 BufferedWriter bw = new BufferedWriter(fw);
 
                 for (int i = 1; i <= count; i++) {
-                    epoch = Instant.now();
+                    epoch = System.currentTimeMillis();
                     name = driverGenerator.generate();
                     load = boxGenerator.generate(maxBoxes, width, height);
-                    line = epoch.toString() + ";" + name + ";" + load + "\r\n";
+                    line = epoch + "," + name + "," + load + "\r\n";
                     bw.write(line);
                 }
 
