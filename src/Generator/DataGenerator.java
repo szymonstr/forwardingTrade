@@ -17,6 +17,7 @@ public class DataGenerator {
 
     private static int width;
     private static int height;
+    private static int size;
     private static int maxBoxes;
     private static boolean test;
     private static String adminDecision = new String();
@@ -26,14 +27,21 @@ public class DataGenerator {
 
     public static void main(String args[]){
             System.out.println("Hello Administrator!");
+            /*
             System.out.println("Please enter map width:");
             width = in.nextInt();
             System.out.println("Please write map height:");
             height = in.nextInt();
+            */
+            System.out.println("Please enter map size:");
+            size = in.nextInt();
+
             System.out.println("Please write maximum count of boxes:");
             maxBoxes = in.nextInt();
 
-            mapGenerator.generate(width,height);
+            width = size;
+            height = size;
+            mapGenerator.generate(size); //width,height
             test = true;
             adminDecision = in.nextLine();
 

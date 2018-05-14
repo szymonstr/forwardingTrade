@@ -16,36 +16,39 @@ public class Courier {
     private static ArrayList<Driver> drivers = new ArrayList<Driver>();
     private static boolean test;
     private static int count;
+    private static boolean running;
 
     public static void main(String args[]){
 
         try{
-            map.load();
+            running = map.load();
         }catch (FileException e) {
             logger.warning(e.getMessage());
         }
-        do {
-            data = new Data(drivers, count);
-            try {
-                data.load(map);
-            } catch (FileException e) {
-                logger.warning(e.getMessage());
-            }
+        if (running) {
+            do {
+                data = new Data(drivers, count);
+                try {
+                    data.load(map);
+                } catch (FileException e) {
+                    logger.warning(e.getMessage());
+                }
 
-            System.out.println("Do you load a new DATA.csv file \ny - yes; other sign - no");
-            adminDecision = in.nextLine();
-            adminDecision.toLowerCase();
-            if (adminDecision.equals("y")) {
-                test = true;
-                drivers = data.getDrivers();
-                count = data.getCount();
-            } else {
-                test = false;
-            }
-        }while (test);
+                System.out.println("Do you load a new DATA.csv file \ny - yes; other sign - no");
+                adminDecision = in.nextLine();
+                adminDecision.toLowerCase();
+                if (adminDecision.equals("y")) {
+                    test = true;
+                    drivers = data.getDrivers();
+                    count = data.getCount();
+                } else {
+                    test = false;
+                }
+            } while (test);
 
-        new Report(data.getDrivers());
 
+            new Report(data.getDrivers());
+        }
         System.out.println("Goodbye.");
     }
 }

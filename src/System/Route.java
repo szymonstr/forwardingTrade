@@ -16,12 +16,15 @@ public class Route {
     private ArrayList<Coordinates> coordinates = new ArrayList<Coordinates>();
     private ArrayList<Coordinates> mapCoordinates = new ArrayList<Coordinates>();
 
-    private int distance_alg1;
+    private int distanceGreedy;
     private int distance_alg2;
     private int distance_alg3;
-    private int time_alg1;
+    private int timeGreedy;
     private int time_alg2;
     private int time_alg3;
+    private int sumDistanceGreedy;
+    private int sumTimeGreedy;
+
 
     private String [] data;
     private String [] points;
@@ -44,6 +47,10 @@ public class Route {
 
     }
 
+    public ArrayList<Coordinates> getCoordinates() {
+        return coordinates;
+    }
+
     public long getEpoch() {
         return epoch;
     }
@@ -61,9 +68,9 @@ public class Route {
 
     //checking boxes coordinates with points on map
     private void CheckPointsOnMap(){
-        for (int k=0 ; k < map.getPoints().size(); k++){
+        for (int k=0 ; k < map.getPointsList().size(); k++){
             for (int i = 0; i < points.length; i++){
-                if (map.getPoints().get(k).equals("(" + points[i] + ")")){
+                if (map.getPointsList().get(k).equals("(" + points[i] + ")")){
                     checkPoints++;
                 }
             }
@@ -81,8 +88,8 @@ public class Route {
     }
 
     private void ChangeMapToCoordinates(){
-        for (int i =0; i< map.getPoints().size(); i++){
-            point = map.getPoints().get(i);
+        for (int i =0; i< map.getPointsList().size(); i++){
+            point = map.getPointsList().get(i);
             point = point.replace('(', ' ');
             point = point.replace(')', ' ');
             point = point.trim();
