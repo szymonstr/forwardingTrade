@@ -34,8 +34,9 @@ public class Report {
     private ArrayList<RoutesPerDay>routesPerDays = new ArrayList<RoutesPerDay>();
     private boolean firstDate = true;
     private boolean added = false;
-    private long averageDistance = 0;
-    private long averageTime = 0;
+    private long averageDistanceBellmanFord;
+    private long averageTimeBellmanFord;
+    private long amountBellmanFord;
 
     public Report(ArrayList<Driver> drivers) {
 
@@ -45,6 +46,11 @@ public class Report {
     }
 
     private void generateRaport() {
+
+        amountBellmanFord = 0;
+        averageTimeBellmanFord = 0;
+        averageDistanceBellmanFord = 0;
+
         for (int i = 0; i < drivers.size(); i++) {
             for (int k = 0; k < drivers.get(i).getRoutes().size(); k++) {
                 date = new Date(drivers.get(i).getRoutes().get(k).getEpoch()).toInstant().toString();
@@ -64,10 +70,19 @@ public class Report {
                 }
 
                 //average route time and distance
+                //BellmanFord
+
+
+                amountBellmanFord++;
+                averageDistanceBellmanFord += drivers.get(i).getRoutes().get(k).getDistanceBellmanFord();
+                averageTimeBellmanFord +=  drivers.get(i).getRoutes().get(k).getTimeBellmanFord();
+
 
 
             }
         }
+        averageTimeBellmanFord = averageTimeBellmanFord/amountBellmanFord;
+        averageDistanceBellmanFord = averageDistanceBellmanFord/amountBellmanFord;
 
     }
 
@@ -102,7 +117,9 @@ public class Report {
             }
 
             bw.write("\r\n");
-            bw.write("alg1\r\n");
+            bw.write("BellmanFord\r\n");
+            line = "Average Time: " + averageTimeBellmanFord + "\r\n" + "Average Distance: " + averageDistanceBellmanFord + "\r\n";
+            bw.write(line);
 
 
             bw.write("\r\n");

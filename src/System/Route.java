@@ -7,19 +7,23 @@
 
 package System;
 
+import Algorithms.BellmanFord;
+
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class Route {
 
+
+
     private Logger logger = Logger.getLogger(Route.class.getName());
     private ArrayList<Coordinates> coordinates = new ArrayList<Coordinates>();
     private ArrayList<Coordinates> mapCoordinates = new ArrayList<Coordinates>();
 
-    private int distanceGreedy;
+    private int distanceBellmanFord;
     private int distance_alg2;
     private int distance_alg3;
-    private int timeGreedy;
+    private int timeBellmanFord;
     private int time_alg2;
     private int time_alg3;
     private int sumDistanceGreedy;
@@ -32,6 +36,7 @@ public class Route {
     private String [] xy = new String[2];
     private String point = new String();
     private Map map;
+    private BellmanFord bellmanFord;
     private int checkPoints = 0;
     private String split = ",";
     private long epoch;
@@ -42,9 +47,12 @@ public class Route {
         this.epoch = Long.parseLong(data[0]);
         this.PrepareData();
         this.CheckPointsOnMap();
-        this.ChangeDataToCoordinates();
-        this.ChangeMapToCoordinates();
-
+        //this.ChangeDataToCoordinates();
+        //this.ChangeMapToCoordinates();
+        this.bellmanFord = new BellmanFord(map, points);
+        bellmanFord.calculation("(1,1)");
+        timeBellmanFord = bellmanFord.getSumTime();
+        distanceBellmanFord = bellmanFord.getSumDistance();
     }
 
     public ArrayList<Coordinates> getCoordinates() {
@@ -55,13 +63,21 @@ public class Route {
         return epoch;
     }
 
+    public int getDistanceBellmanFord() {
+        return distanceBellmanFord;
+    }
+
+    public int getTimeBellmanFord() {
+        return timeBellmanFord;
+    }
+
     //prepare data to calculate the route
     private void PrepareData(){
         this.dateTime = this.data[0];
         this.points = new String[(data.length - 2)/2];
         for (int i = 0; i < this.points.length; i++){
-            this.points[i] = this.data[2*i+2].replace('(', ' ') +","+ this.data[2*i+3].replace(')',' ');
-            this.points[i] = this.points[i].trim();
+            this.points[i] = this.data[2*i+2] +","+ this.data[2*i+3]; //this.points[i] = this.data[2*i+2].replace('(', ' ') +","+ this.data[2*i+3].replace(')',' ');
+            //this.points[i] = this.points[i].trim();
             //System.out.println(points[i]);
         }
     }
@@ -70,7 +86,7 @@ public class Route {
     private void CheckPointsOnMap(){
         for (int k=0 ; k < map.getPointsList().size(); k++){
             for (int i = 0; i < points.length; i++){
-                if (map.getPointsList().get(k).equals("(" + points[i] + ")")){
+                if (map.getPointsList().get(k).equals(points[i])){   //(map.getPointsList().get(k).equals("(" + points[i] + ")"))
                     checkPoints++;
                 }
             }
@@ -80,6 +96,7 @@ public class Route {
         }
     }
 
+    /*
     private void ChangeDataToCoordinates(){
         for (int i= 0; i < points.length; i++){
             xy = points[i].split(split);
@@ -97,6 +114,7 @@ public class Route {
             mapCoordinates.add(new Coordinates(Integer.parseInt(xy[0]), Integer.parseInt(xy[1])));
         }
     }
+    */
 
 
 }

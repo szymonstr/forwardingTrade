@@ -40,7 +40,7 @@ public class MapGenerator {
                     bw.write(line);
                 }else{
                     line ="";
-                    for (int p = 0; p < size -1; p++){
+                    for (int p = 0; p < size ; p++){
                         line = line + (random.nextInt(9) + 1);
 
                     }
