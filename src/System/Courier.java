@@ -46,8 +46,9 @@ public class Courier {
                 }
             } while (test);
 
-
-            new Report(data.getDrivers());
+            if (data.getDrivers().size() > 0) {
+                new Report(data.getDrivers());
+            }
         }
         System.out.println("Goodbye.");
     }

@@ -20,7 +20,7 @@ public class BellmanFord {
     private HashMap<String,Integer> point = new HashMap<String, Integer>();
 
 
-    private int dist[];
+    private int times[];
     private int previousPoint[];
     private int V;
     private int E;
@@ -62,10 +62,10 @@ public class BellmanFord {
         sumDistance = 0;
         prepareData(source);
         calcRoute(point.get(source));
-        //printArr();
+        //showArray();
         time = 0;
         for (int i = 0; i < packages.size(); i++) {
-            time = time + 2 * dist[point.get(packages.get(i))];
+            time = time + 2 * times[point.get(packages.get(i))];
             previous = point.get(packages.get(i));
             if (!packages.get(i).equals(source)) {
                 distance = 1;
@@ -93,45 +93,28 @@ public class BellmanFord {
         E = connections.size();
         previousPoint = new int[V];
 
-        dist = new int[V];
+        times = new int[V];
 
-        // Step 1: Initialize distances from src to all other
-        // vertices as INFINITE
+        //set distance to infinity
         for (int i = 0; i < V; ++i) {
             previousPoint[i] = 0;
-            dist[i] = Integer.MAX_VALUE;
+            times[i] = Integer.MAX_VALUE;
         }
-        dist[src] = 0;
+        times[src] = 0;
 
-        // Step 2: Relax all edges |V| - 1 times. A simple
         // shortest path from src to any other vertex can
-        // have at-most |V| - 1 edges
         for (int i = 1; i < V; ++i) {
             for (int j = 0; j < E; ++j) {
                 int u = connections.get(j).getSrc();
                 int v = connections.get(j).getDest();
                 int weight = connections.get(j).getWeight();
-                if (dist[u] != Integer.MAX_VALUE && dist[u] + weight < dist[v]) {
-                    dist[v] = dist[u] + weight;
+                if (times[u] != Integer.MAX_VALUE && times[u] + weight < times[v]) {
+                    times[v] = times[u] + weight;
                     previousPoint[v] = u;
                 }
             }
         }
-        /*
-        // Step 3: check for negative-weight cycles.  The above
-        // step guarantees shortest distances if graph doesn't
-        // contain negative weight cycle. If we get a shorter
-        //  path, then there is a cycle.
-        for (int j=0; j<E; ++j)
-        {
-            int u = connections.get(j).getSrc();
-            int v = connections.get(j).getDest();
-            int weight = connections.get(j).getWeight();
-            if (dist[u] != Integer.MAX_VALUE &&
-                    dist[u]+weight < dist[v])
-                System.out.println("Graph contains negative weight cycle");
-        }
-        */
+
 
 
     }
@@ -162,9 +145,9 @@ public class BellmanFord {
         }
     }
 
-    public void printArr() {
-        System.out.println("Vertex   Distance from Source");
+    public void showArray() {
+        System.out.println("Vertex   Distance from Source    Previous point ");
         for (int i=0; i<V; ++i)
-            System.out.println(i+"\t\t"+dist[i] + " \t\t" + previousPoint[i]);
+            System.out.println(i+"\t\t"+times[i] + " \t\t" + previousPoint[i]);
     }
 }
