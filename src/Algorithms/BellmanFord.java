@@ -60,6 +60,7 @@ public class BellmanFord {
         //courier always come back to the base to get new package
         sumTime = 0;
         sumDistance = 0;
+        /*
         prepareData(source);
         calcRoute(point.get(source));
         //showArray();
@@ -78,8 +79,52 @@ public class BellmanFord {
             }
             sumDistance += 2 *distance;
         }
+        */
+        firstSource = source;
 
-        sumTime = time;
+        while(packages.size()>0){
+            time = Integer.MAX_VALUE;
+            prepareData(source);
+            calcRoute(point.get(source));
+            for (int i = 0; i <  packages.size(); i++){
+                int time_t = times[point.get(packages.get(i))];
+                if (time_t < time){
+                    time = time_t;
+                    newSource = i;
+                    previous = point.get(packages.get(i));
+                    if (!packages.get(i).equals(source)) {
+                        distance = 1;
+                    }else{
+                        distance = 0;
+                    }
+                    while (previousPoint[previous] != 0){
+                        distance++;
+                        previous = previousPoint[previous];
+                    }
+                }
+            }
+            sumTime += time;
+            sumDistance += distance;
+            source = packages.get(newSource);
+            packages.remove(newSource);
+        }
+
+        prepareData(firstSource);
+        calcRoute(point.get(firstSource));
+        sumTime += times[point.get(source)];
+        previous = point.get(source);
+        if (!source.equals(firstSource)) {
+            distance = 1;
+        }else{
+            distance = 0;
+        }
+        while (previousPoint[previous] != 0){
+            distance++;
+            previous = previousPoint[previous];
+        }
+        sumDistance += distance;
+
+        //sumTime = time;
         packages.clear();
         //System.out.println("Sum Time: " + sumTime + "\t\t Sum Distance: " +  sumDistance);
 
@@ -140,6 +185,7 @@ public class BellmanFord {
                 pointDest = map.getPointsList().get(j);
                 if (map.getAdjacencyMatrix().get(pointSrc + "-" + pointDest) != null){
                     connections.add(new Connection(point.get(pointSrc), point.get(pointDest),map.getAdjacencyMatrix().get(pointSrc + "-" + pointDest)));
+                    connections.add(new Connection(point.get(pointDest),point.get(pointSrc), map.getAdjacencyMatrix().get(pointSrc + "-" + pointDest)));
                 }
             }
         }

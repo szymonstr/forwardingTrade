@@ -21,7 +21,7 @@ public class Map {
     private ArrayList<Integer> sizes = new ArrayList<Integer>();
     //private ArrayList<Connection> connections = new ArrayList<Connection>();
     private Scanner in = new Scanner(System.in);
-    private String path = "./MAP.csv";
+    private String path = "./MAP.txt";
     private File file = new File(path);
     private Logger logger = Logger.getLogger(Map.class.getName());
     private BufferedReader bufferedReader;

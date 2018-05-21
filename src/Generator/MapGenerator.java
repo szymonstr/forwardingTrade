@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 public class MapGenerator {
 
-    private String path = "./MAP.csv";
+    private String path = "./MAP.txt";
     private File file = new File(path);
     private Logger logger = Logger.getLogger(MapGenerator.class.getName());
     private String coordinates = new String();

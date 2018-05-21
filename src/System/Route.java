@@ -7,27 +7,30 @@
 
 package System;
 
-import Algorithms.BellmanFord;
+import Algorithms.*;
+import Algorithms.GeneticAlgorithm.CalculationDistanceTime;
+import Algorithms.GeneticAlgorithm.GeneticAlgorithm;
+import Algorithms.GeneticAlgorithm.Population;
+import Algorithms.GeneticAlgorithm.TourManager;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class Route {
 
-
+    private final String source= "(1,1)";
 
     private Logger logger = Logger.getLogger(Route.class.getName());
     private ArrayList<Coordinates> coordinates = new ArrayList<Coordinates>();
     private ArrayList<Coordinates> mapCoordinates = new ArrayList<Coordinates>();
 
     private int distanceBellmanFord;
-    private int distance_alg2;
-    private int distance_alg3;
+    private int distancePrim;
+    private int distanceGenetic;
     private int timeBellmanFord;
-    private int time_alg2;
-    private int time_alg3;
-    private int sumDistanceGreedy;
-    private int sumTimeGreedy;
+    private int timePrim;
+    private int timeGenetic;
+
 
 
     private String [] data;
@@ -37,6 +40,8 @@ public class Route {
     private String point = new String();
     private Map map;
     private BellmanFord bellmanFord;
+    private Prim prim;
+    private GeneticAlgorithm geneticAlgorithm;
     private int checkPoints = 0;
     private String split = ",";
     private long epoch;
@@ -50,9 +55,14 @@ public class Route {
         //this.ChangeDataToCoordinates();
         //this.ChangeMapToCoordinates();
         this.bellmanFord = new BellmanFord(map, points);
-        bellmanFord.calculation("(1,1)");
+        bellmanFord.calculation(source);
         timeBellmanFord = bellmanFord.getSumTime();
         distanceBellmanFord = bellmanFord.getSumDistance();
+        this.prim = new Prim(map, points);
+        prim.calculation(source);
+        timePrim = prim.getSumTime();
+        distancePrim = prim.getSumDistance();
+        //genetic();
     }
 
     public ArrayList<Coordinates> getCoordinates() {
@@ -70,6 +80,53 @@ public class Route {
     public int getTimeBellmanFord() {
         return timeBellmanFord;
     }
+
+    public int getDistancePrim() {
+        return distancePrim;
+    }
+
+    public int getTimePrim() {
+        return timePrim;
+    }
+
+    /*
+    public int getDistanceGenetic() {
+        return distanceGenetic;
+    }
+
+    public int getTimeGenetic() {
+        return timeGenetic;
+    }
+
+    private void genetic(){
+        geneticAlgorithm = new GeneticAlgorithm(map);
+        for (int i = 0; i<points.length; i++) {
+            TourManager.addPoint(points[i]);
+        }
+
+        Population pop = new Population(50, true, map);
+
+        pop = geneticAlgorithm.evolvePopulation(pop);
+        for (int i = 0; i<  100; i++){
+            pop = geneticAlgorithm.evolvePopulation(pop);
+        }
+
+        timeGenetic =0;
+        timeGenetic = pop.getFittest().getTime();
+        CalculationDistanceTime calc = new CalculationDistanceTime(map);
+        timeGenetic += calc.calcTime(source, pop.getFittest().getPoint(0));
+        timeGenetic += calc.calcTime(pop.getFittest().getPoint(pop.getFittest().tourSize()-1), source);
+
+        distanceGenetic = 0;
+
+        for (int i = pop.getFittest().tourSize() - 1; i > 0; i--){
+            distanceGenetic += calc.calcDistance(pop.getFittest().getPoint(i), pop.getFittest().getPoint(i-1));
+        }
+        distanceGenetic += calc.calcDistance(source, pop.getFittest().getPoint(0));
+        distanceGenetic += calc.calcDistance(pop.getFittest().getPoint(pop.getFittest().tourSize()-1), source);
+
+    }
+    */
 
     //prepare data to calculate the route
     private void PrepareData(){

@@ -26,6 +26,7 @@ public class Courier {
             logger.warning(e.getMessage());
         }
         if (running) {
+
             do {
                 data = new Data(drivers, count);
                 try {
@@ -34,7 +35,7 @@ public class Courier {
                     logger.warning(e.getMessage());
                 }
 
-                System.out.println("Do you load a new DATA.csv file \ny - yes; other sign - no");
+                System.out.println("Do you load a new DATA.txt file \ny - yes; other sign - no");
                 adminDecision = in.nextLine();
                 adminDecision.toLowerCase();
                 if (adminDecision.equals("y")) {

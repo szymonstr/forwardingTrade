@@ -24,5 +24,5 @@ public class BelmanFordTest {
 
         System.out.println(bellmanFord.getSumTime() + " <- sumTime");
         System.out.println(bellmanFord.getSumDistance() + " <- sumDistance");
-     }
+    }
 }

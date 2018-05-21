@@ -37,6 +37,12 @@ public class Report {
     private long averageDistanceBellmanFord;
     private long averageTimeBellmanFord;
     private long amountBellmanFord;
+    private long averageDistancePrim;
+    private long averageTimePrim;
+    private long amountPrim;
+    private long averageDistanceGenetic;
+    private long averageTimeGenetic;
+    private long amountGenetic;
 
     public Report(ArrayList<Driver> drivers) {
 
@@ -50,6 +56,14 @@ public class Report {
         amountBellmanFord = 0;
         averageTimeBellmanFord = 0;
         averageDistanceBellmanFord = 0;
+
+        amountPrim = 0;
+        averageTimePrim = 0;
+        averageDistancePrim = 0;
+
+        amountGenetic =0;
+        averageTimeGenetic = 0;
+        averageDistanceGenetic = 0;
 
         for (int i = 0; i < drivers.size(); i++) {
             for (int k = 0; k < drivers.get(i).getRoutes().size(); k++) {
@@ -71,18 +85,29 @@ public class Report {
 
                 //average route time and distance
                 //BellmanFord
-
-
                 amountBellmanFord++;
                 averageDistanceBellmanFord += drivers.get(i).getRoutes().get(k).getDistanceBellmanFord();
                 averageTimeBellmanFord +=  drivers.get(i).getRoutes().get(k).getTimeBellmanFord();
 
+                //Prim
+                amountPrim++;
+                averageDistancePrim += drivers.get(i).getRoutes().get(k).getDistancePrim();
+                averageTimePrim += drivers.get(i).getRoutes().get(k).getTimePrim();
 
-
+                //Genetic
+                amountGenetic++;
+                //averageDistanceGenetic += drivers.get(i).getRoutes().get(k).getDistanceGenetic();
+                //averageTimeGenetic += drivers.get(i).getRoutes().get(k).getTimeGenetic();
             }
         }
         averageTimeBellmanFord = averageTimeBellmanFord/amountBellmanFord;
         averageDistanceBellmanFord = averageDistanceBellmanFord/amountBellmanFord;
+
+        averageTimePrim = averageTimePrim/amountPrim;
+        averageDistancePrim = averageDistancePrim/amountPrim;
+
+        averageTimeGenetic = averageTimeGenetic/amountGenetic;
+        averageDistanceGenetic = averageDistanceGenetic/amountGenetic;
 
     }
 
@@ -123,10 +148,14 @@ public class Report {
 
 
             bw.write("\r\n");
-            bw.write("alg2\r\n");
+            bw.write("Prim\r\n");
+            line = "Average Time: " + averageTimePrim + "\r\n" + "Average Distance: " + averageDistancePrim + "\r\n";
+            bw.write(line);
 
             bw.write("\r\n");
-            bw.write("alg3\r\n");
+            bw.write("Genetic Algorithm\r\n");
+            //line = "Average Time: " + averageTimeGenetic + "\r\n" + "Average Distance: " + averageDistanceGenetic + "\r\n";
+            //bw.write(line);
 
             bw.close();
         } catch (IOException e) {
