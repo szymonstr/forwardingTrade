@@ -19,7 +19,7 @@ public class TestPrim{
         } catch (FileException e) {
             e.getMessage();
         }
-        String[] points = {"(2,3)", "(3,3)"};
+        String[] points = {"(1,3)", "(2,3)"};
 
         prim = new Prim(map,points);
         prim.calculation("(1,1)");

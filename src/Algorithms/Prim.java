@@ -23,10 +23,14 @@ public class Prim
     private String[] points;
     private String pointSrc;
     private String pointDest;
-    private String source;
+    private String firstSurce;
     private int sumDistance;
     private int sumTime;
     private int time;
+    private int time_t;
+    private int distance;
+    private int distance_t;
+    private int newSource;
 
 
     private int weight;
@@ -118,15 +122,15 @@ public class Prim
         }
         */
 
-        prepareData(source);
-        prepareGraph();
-        primMST();
+        //prepareData(source);
+        //prepareGraph();
+        //primMST();
 
         //courier always come back to the base to get new package
         sumTime = 0;
         sumDistance = 0;
-        time = 0;
 
+        /*
         for(int i =0; i< packages.size(); i++){
             int destination = point.get(packages.get(i));
             while(destination !=0 ){
@@ -138,6 +142,52 @@ public class Prim
        }
         sumDistance = sumDistance *2;
         sumTime = sumTime *2;
+        */
+
+
+        firstSurce = source;
+       while (packages.size()>0){
+          time = Integer.MAX_VALUE;
+           prepareData(source);
+           prepareGraph();
+           primMST();
+           for (int i =0; i < packages.size(); i++){
+               time_t =0;
+               distance_t = 0;
+               int destination = point.get(packages.get(i));
+               while(destination !=0 ){
+                   time_t += graph[destination][parent[destination]];
+                   destination = parent[destination];
+                   distance_t++;
+               }
+               if (time_t < time){
+                   time = time_t;
+                   distance = distance_t;
+                   newSource = i;
+               }
+           }
+           sumTime += time;
+           sumDistance += distance;
+           source = packages.get(newSource);
+           packages.remove(newSource);
+       }
+
+       prepareData(firstSurce);
+       prepareGraph();
+       primMST();
+       time_t =0;
+       distance_t = 0;
+       int destination = point.get(source);
+       while(destination !=0 ){
+           time_t += graph[destination][parent[destination]];
+           destination = parent[destination];
+           distance_t++;
+       }
+
+       sumTime += time_t;
+       sumDistance += distance_t;
+
+
 
         //sumTime = time;
         packages.clear();
@@ -161,13 +211,13 @@ public class Prim
 
     // A utility function to print the constructed MST stored in
     // parent[]
-//    void printMST( int n, int graph[][]) {
-//
-//        System.out.println("Edge   Weight");
-//        for (int i = 1; i < V; i++)
-//            System.out.println(parent[i]+" - "+ i+"    "+
-//                    graph[i][parent[i]]);
-//    }
+    void printMST( int n, int graph[][]) {
+
+        System.out.println("Edge   Weight");
+        for (int i = 1; i < V; i++)
+            System.out.println(parent[i]+" - "+ i+"    "+
+                    graph[i][parent[i]]);
+    }
 
     // Function to construct and print MST for a graph represented
     //  using adjacency matrix representation

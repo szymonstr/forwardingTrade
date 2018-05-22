@@ -17,7 +17,7 @@ public class BelmanFordTest {
             e.getMessage();
         }
 
-        String[] points = {"(1,2)", "(2,1)"};
+        String[] points = {"(1,3)", "(2,3)"};
 
         bellmanFord = new BellmanFord(map, points);
         bellmanFord.calculation("(1,1)");

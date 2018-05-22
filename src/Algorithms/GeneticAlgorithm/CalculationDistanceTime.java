@@ -12,30 +12,31 @@ public class CalculationDistanceTime {
 
 
     //private HashMap<String,Integer> connections = new HashMap<String, Integer>();
-    //private ArrayList<String> packages = new ArrayList<String>();
+
     private ArrayList<Connection> connections = new ArrayList<Connection>();
-    private HashMap<String, Integer> point = new HashMap<String, Integer>();
+    private HashMap<String,Integer> point = new HashMap<String, Integer>();
+
+    private int times[];
+    private int previousPoint[];
+    private int V;
+    private int E;
+    private int previous;
+    private int number;
+
+    private String pointSrc;
+    private String pointDest;
 
 
     private final String split = ",";
     private String[] xy;
-    private String pointSrc;
-    private String pointDest;
     private int xFrom;
     private int yFrom;
     private int xDest;
     private int yDest;
     private int xDistance;
     private int yDistance;
-    private int number;
 
-    private int weight;
-    private int x;
-    private int y;
-    private int V;
-    private int E;
-    private int graph[][];
-    private int[] parent;
+
 
     private Map map;
 
@@ -50,18 +51,6 @@ public class CalculationDistanceTime {
         //prepareData();
         //xDistance = xDest - xFrom;
         //yDistance = yDest - yFrom;
-
-
-        prepareData(fromPoint);
-        prepareGraph();
-        primMST();
-
-        int destination = point.get(destinationPoint);
-        while(destination != 0){
-            time += graph[destination][parent[destination]];
-            destination = parent[destination];
-        }
-
 
 
 
@@ -86,6 +75,10 @@ public class CalculationDistanceTime {
         }
         */
 
+        prepareData(fromPoint);
+        calcRoute(point.get(fromPoint));
+
+        time = times[point.get(destinationPoint)];
 
         return time;
     }
@@ -96,16 +89,17 @@ public class CalculationDistanceTime {
         //xDistance = xDest - xFrom;
         //yDistance = yDest - yFrom;
         //distance = Math.abs(xDistance) + Math.abs(yDistance);
-
-
         prepareData(fromPoint);
-        prepareGraph();
-        primMST();
-
-        int destination = point.get(destinationPoint);
-        while(destination != 0){
-            destination = parent[destination];
+        calcRoute(point.get(fromPoint));
+        previous = point.get(destinationPoint);
+        if (!destinationPoint.equals(fromPoint)) {
+            distance = 1;
+        }else{
+            distance = 0;
+        }
+        while (previousPoint[previous] != 0){
             distance++;
+            previous = previousPoint[previous];
         }
 
         return distance;
@@ -143,119 +137,72 @@ public class CalculationDistanceTime {
             }
        }
     }
-    */
 
-    private void prepareData(String source) {
+    */
+    private void calcRoute(int start) {
+
+        int src = start;
+        V = point.size();
+        E = connections.size();
+        previousPoint = new int[V];
+
+        times = new int[V];
+
+        //set distance to infinity
+        for (int i = 0; i < V; ++i) {
+            previousPoint[i] = 0;
+            times[i] = Integer.MAX_VALUE;
+        }
+        times[src] = 0;
+
+        // shortest path from src to any other vertex can
+        for (int i = 1; i < V; ++i) {
+            for (int j = 0; j < E; ++j) {
+                int u = connections.get(j).getSrc();
+                int v = connections.get(j).getDest();
+                int weight = connections.get(j).getWeight();
+                if (times[u] != Integer.MAX_VALUE && times[u] + weight < times[v]) {
+                    times[v] = times[u] + weight;
+                    previousPoint[v] = u;
+                }
+            }
+        }
+
+
+
+    }
+
+    private void prepareData(String source){
         point.clear();
         connections.clear();
 
         number = 0;
         point.put(source, number);
+        for (int i =  0; i< map.getPointsList().size(); i++){
 
-        for (int i = 0; i < map.getPointsList().size(); i++) {
-
-            if (source.equals(map.getPointsList().get(i))) {
+            if (source.equals(map.getPointsList().get(i))){
                 //empty
-            } else {
+            }else {
                 number++;
                 point.put(map.getPointsList().get(i), number);
             }
         }
-        for (int i = 0; i < map.getPointsList().size(); i++) {
+        for (int i = 0; i< map.getPointsList().size(); i++){
             pointSrc = map.getPointsList().get(i);
-            for (int j = 0; j < map.getPointsList().size(); j++) {
+            for (int j = 0; j < map.getPointsList().size(); j++){
                 pointDest = map.getPointsList().get(j);
-                if (map.getAdjacencyMatrix().get(pointSrc + "-" + pointDest) != null) {
-                    connections.add(new Connection(point.get(pointSrc), point.get(pointDest), map.getAdjacencyMatrix().get(pointSrc + "-" + pointDest)));
+                if (map.getAdjacencyMatrix().get(pointSrc + "-" + pointDest) != null){
+                    connections.add(new Connection(point.get(pointSrc), point.get(pointDest),map.getAdjacencyMatrix().get(pointSrc + "-" + pointDest)));
+                    connections.add(new Connection(point.get(pointDest),point.get(pointSrc), map.getAdjacencyMatrix().get(pointSrc + "-" + pointDest)));
                 }
             }
         }
     }
 
-    private void prepareGraph() {
-        V = point.size();  // Number of vertices in graph
-        E = connections.size();  // Number of edges in graph
-
-        graph = new int[V][V];
-
-        for (int j = 0; j < V; j++) {
-            for (int i = 0; i < V; i++) {
-                graph[j][i] = 0;
-            }
-        }
-        for (int j = 0; j < connections.size(); j++) {
-            x = connections.get(j).getSrc();
-            y = connections.get(j).getDest();
-            weight = connections.get(j).getWeight();
-            graph[x][y] = weight;
-            graph[y][x] = weight;
-        }
-
-    }
-
-    private int minKey(int key[], Boolean mstSet[])
-    {
-        // Initialize min value
-        int min = Integer.MAX_VALUE, min_index=-1;
-
-        for (int v = 0; v < V; v++)
-            if (mstSet[v] == false && key[v] < min)
-            {
-                min = key[v];
-                min_index = v;
-            }
-
-        return min_index;
-    }
 
 
-    // Function to construct and print MST for a graph represented
-    //  using adjacency matrix representation
-    private void primMST() {
-
-        // Array to store constructed MST
-        parent = new int[V];
-
-        // Key values used to pick minimum weight edge in cut
-        int key[] = new int [V];
-
-        // To represent set of vertices not yet included in MST
-        Boolean mstSet[] = new Boolean[V];
-
-        // Initialize all keys as INFINITE
-        for (int i = 0; i < V; i++) {
-            key[i] = Integer.MAX_VALUE;
-            mstSet[i] = false;
-        }
-
-        // Always include first 1st vertex in MST.
-        key[0] = 0;     // Make key 0 so that this vertex is
-        // picked as first vertex
-        parent[0] = -1; // First node is always root of MST
-
-        // The MST will have V vertices
-        for (int count = 0; count < V-1; count++) {
-            // Pick thd minimum key vertex from the set of vertices
-            // not yet included in MST
-            int u = minKey(key, mstSet);
-
-            // Add the picked vertex to the MST Set
-            mstSet[u] = true;
-
-            // Update key value and parent index of the adjacent
-            // vertices of the picked vertex. Consider only those
-            // vertices which are not yet included in MST
-            for (int v = 0; v < V; v++) {
-                // Update the key only if graph[u][v] is smaller than key[v]
-                if (graph[u][v] != 0 && mstSet[v] == false && graph[u][v] < key[v]) {
-                    parent[v] = u;
-                    key[v] = graph[u][v];
-                }
-            }
-        }
 
 
-    }
 
 }
 
