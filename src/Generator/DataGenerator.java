@@ -27,21 +27,19 @@ public class DataGenerator {
 
     public static void main(String args[]){
             System.out.println("Hello Administrator!");
-            /*
+
             System.out.println("Please enter map width:");
             width = in.nextInt();
             System.out.println("Please write map height:");
             height = in.nextInt();
-            */
-            System.out.println("Please enter map size:");
-            size = in.nextInt();
+
+            //System.out.println("Please enter map size:");
+            //size = in.nextInt();
 
             System.out.println("Please write maximum count of boxes:");
             maxBoxes = in.nextInt();
 
-            width = size;
-            height = size;
-            mapGenerator.generate(size); //width,height
+            mapGenerator.generate(height, width); //height,width
             test = true;
             adminDecision = in.nextLine();
 

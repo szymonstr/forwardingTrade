@@ -49,7 +49,11 @@ public class Data {
                while (!endOfFile) {
                     if ((line = bufferedReader.readLine()) != null) {
 
+                        //line = line.replace(';', ' ');
+                        //line = line.trim();
                         tab = line.split(csvSplit);
+                        tab[tab.length -1] = tab[tab.length-1].replace(';', ' ');
+                        tab[tab.length -1] = tab[tab.length-1].trim();
                         added = false;
                         newDriver = true;
 

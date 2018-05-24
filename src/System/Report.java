@@ -96,8 +96,8 @@ public class Report {
 
                 //Genetic
                 amountGenetic++;
-                //averageDistanceGenetic += drivers.get(i).getRoutes().get(k).getDistanceGenetic();
-                //averageTimeGenetic += drivers.get(i).getRoutes().get(k).getTimeGenetic();
+                averageDistanceGenetic += drivers.get(i).getRoutes().get(k).getDistanceGenetic();
+                averageTimeGenetic += drivers.get(i).getRoutes().get(k).getTimeGenetic();
             }
         }
         averageTimeBellmanFord = averageTimeBellmanFord/amountBellmanFord;
@@ -154,8 +154,8 @@ public class Report {
 
             bw.write("\r\n");
             bw.write("Genetic Algorithm\r\n");
-            //line = "Average Time: " + averageTimeGenetic + "\r\n" + "Average Distance: " + averageDistanceGenetic + "\r\n";
-            //bw.write(line);
+            line = "Average Time: " + averageTimeGenetic + "\r\n" + "Average Distance: " + averageDistanceGenetic + "\r\n";
+            bw.write(line);
 
             bw.close();
         } catch (IOException e) {

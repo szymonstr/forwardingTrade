@@ -2,6 +2,8 @@ package Algorithms.GeneticAlgorithm;
 
 import System.Map;
 
+import java.util.ArrayList;
+
 public class GeneticAlgorithm {
 
     // GA PARAMETERS
@@ -10,14 +12,16 @@ public class GeneticAlgorithm {
     private final int tournamentSize = 5;
     private final boolean elitism = true;
     private Map map;
+    private ArrayList<String> points;
 
-    public GeneticAlgorithm(Map map) {
+    public GeneticAlgorithm(Map map, ArrayList<String> points) {
         this.map = map;
+        this.points = points;
     }
 
     //Evolves a population over one generation
     public  Population evolvePopulation(Population pop){
-        Population newPopulation = new Population(pop.populationSize(), false, map);
+        Population newPopulation = new Population(pop.populationSize(), false, map, points);
 
         //Keep our best individual if elitism is enabled
         int elitismOffset = 0;
@@ -32,7 +36,9 @@ public class GeneticAlgorithm {
         for (int i = elitismOffset; i < newPopulation.populationSize(); i++){
             //select parents
             Tour parent1 = tournamentSelection(pop);
+            //System.out.println("Parent 1: " +parent1.toString());
             Tour parent2 = tournamentSelection(pop);
+            //System.out.println("Parent 2: " + parent2.toString());
             //Crossover parents
             Tour child = crossover(parent1, parent2);
             //add child to new population
@@ -50,7 +56,7 @@ public class GeneticAlgorithm {
     //Applies crossover to a set of parents and creates offspring
     public Tour crossover(Tour parent1, Tour parent2){
         //Create new child tour
-        Tour child = new Tour(map);
+        Tour child = new Tour(map, points);
         //Get start and end sub tour positions for parent1's tour
         int startPos = (int) (Math.random() * parent1.tourSize());
         int endPos = (int) (Math.random() *  parent1.tourSize());
@@ -81,6 +87,8 @@ public class GeneticAlgorithm {
                 }
             }
         }
+
+
         return child;
     }
 
@@ -107,7 +115,7 @@ public class GeneticAlgorithm {
     //Select candidate to crossover
     private  Tour tournamentSelection(Population pop){
         //Create tournament population
-        Population tournament = new Population(tournamentSize, false, map);
+        Population tournament = new Population(tournamentSize, false, map, points);
         //For each place in the tournament get a random candidate tour and add it
         for (int i = 0; i< tournamentSize; i++){
             int randomId = (int)(Math.random() * pop.populationSize());

@@ -75,10 +75,16 @@ public class CalculationDistanceTime {
         }
         */
 
+        //System.out.println(destinationPoint);
+
         prepareData(fromPoint);
         calcRoute(point.get(fromPoint));
 
+
         time = times[point.get(destinationPoint)];
+
+
+
 
         return time;
     }
@@ -150,6 +156,7 @@ public class CalculationDistanceTime {
 
         //set distance to infinity
         for (int i = 0; i < V; ++i) {
+
             previousPoint[i] = 0;
             times[i] = Integer.MAX_VALUE;
         }

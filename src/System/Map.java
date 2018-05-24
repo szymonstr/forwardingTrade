@@ -19,9 +19,10 @@ public class Map {
     private ArrayList<String> pointsList = new ArrayList<String>();
     private HashMap<String,Integer> adjacencyMatrix = new HashMap<String, Integer>();
     private ArrayList<Integer> sizes = new ArrayList<Integer>();
+    private ArrayList<char[]> rows = new ArrayList<char[]>();
     //private ArrayList<Connection> connections = new ArrayList<Connection>();
     private Scanner in = new Scanner(System.in);
-    private String path = "./MAP.txt";
+    private String path = "./MAP.csv";
     private File file = new File(path);
     private Logger logger = Logger.getLogger(Map.class.getName());
     private BufferedReader bufferedReader;
@@ -37,6 +38,7 @@ public class Map {
     private int y;
     private int k;
     private int row;
+    private int width;
     private int size1;
     private int size2;
     //private int number;
@@ -66,18 +68,18 @@ public class Map {
     public boolean load() throws FileException {
 
         //start settings
+        width = 0;
         row = 0;
         running = true;
         x = 0;
         k = 0;
+        rows.clear();
 
         try {
             if (file.exists()) {
                 bufferedReader = new BufferedReader(new FileReader(file));
                 while ((line = bufferedReader.readLine()) != null && running) {
 
-
-                    y=1;    //in all of iteration we need y set to 1
 
                     //checking rows of the date file
                     char[] chars = line.toCharArray();
@@ -136,11 +138,30 @@ public class Map {
                     }
 
 
-                    //prepare adjacency matrix
+                    // add good data
                     if (running) {
+                        rows.add(chars);
+                        k++;
+                    }
+
+                }
 
 
-                        if (k % 2 == 0) {
+
+                //change data to useful to algorithms
+                if (running) {
+
+                    if (rows.size()%2 == 0){
+                        int last = rows.size() -1;
+                        rows.remove(last);
+                    }
+
+                    //prepare adjacency matrix
+                    for (int i =0; i<rows.size(); i++) {
+
+                        y=1;    //in all of iteration we need y set to 1
+
+                        if (i % 2 == 0) {
                             row++;
                             //System.out.println(x + " x"+ row + "  row");
                         }
@@ -148,36 +169,30 @@ public class Map {
                         x = row;
 
                         //if row of file is even we need one sign less from chars array
-                        if (k % 2 == 0) {
-                            for (int i = 0; i < chars.length-1; i++) {
+                        if (i % 2 == 0) {
+                            for (int ii = 0; ii < rows.get(i).length - 1; ii++) {
 
-                                key = "(" + x + "," + y + ")-(" + x  + "," + (y+1) + ")";
+                                key = "(" + x + "," + y + ")-(" + x + "," + (y + 1) + ")";
                                 //System.out.println(key + "\t\t" + Character.getNumericValue(chars[i]));
-                                adjacencyMatrix.put(key, Character.getNumericValue(chars[i]));
+                                adjacencyMatrix.put(key, Character.getNumericValue(rows.get(i)[ii]));
                                 y++;
                             }
                         } else {
 
-                            for (int i = 0; i < chars.length ; i++) {
-
-                                key = "(" + x + "," + y + ")-(" + (x+1) + "," + y  + ")";
+                            for (int ii = 0; ii < rows.get(i).length; ii++) {
+                                width = y;
+                                key = "(" + x + "," + y + ")-(" + (x + 1) + "," + y + ")";
                                 //System.out.println(key + "\t\t" + Character.getNumericValue(chars[i]));
-                                adjacencyMatrix.put(key, Character.getNumericValue(chars[i]));
+                                adjacencyMatrix.put(key, Character.getNumericValue(rows.get(i)[ii]));
                                 y++;
-                             }
+                            }
                         }
 
-                        k++;
                     }
 
-                }
-
-
-                //change data to useful to algorithms
-                if (running) {
                     //number = 0;
                     for (int x = 1; x <= row; x++) {
-                        for (int y = 1; y <= row; y++) {
+                        for (int y = 1; y <= width; y++) {
                             //points.put("(" + x + "," + y + ")", number);
                             //System.out.println("(" + x + "," + y + ")    " + number);
                             pointsList.add("(" + x + "," + y + ")");

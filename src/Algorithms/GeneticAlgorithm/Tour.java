@@ -9,31 +9,36 @@ public class Tour {
     private ArrayList<String> tour = new ArrayList<String>();
 
     private Map map;
+    private ArrayList<String> points;
 
     private double fitness = 0;
     private int time = 0;  // in our problem time == distance in algorithm
 
     //Constructor - blank tour
-    public Tour(Map map){
+    public Tour(Map map, ArrayList<String> points){
         this.map = map;
-        for (int i = 0; i< TourManager.numberOfPoints(); i++){
+        this.points = points;
+        for (int i = 0; i< points.size(); i++){
             tour.add(null);
         }
     }
 
-    public Tour(ArrayList<String> tour, Map map){
+    public Tour(ArrayList<String> tour, Map map, ArrayList<String> points){
         this.map = map;
         this.tour = tour;
+        this.points = points;
     }
 
     //Create a random individual
     public void generateIndividual(){
         // Loop through all our destination points and add them to our tour
-        for (int pointIndex = 0; pointIndex < TourManager.numberOfPoints(); pointIndex++){
-            setPoint(pointIndex, TourManager.getPoint(pointIndex));
+        for (int pointIndex = 0; pointIndex < points.size(); pointIndex++){
+            setPoint(pointIndex, points.get(pointIndex));
         }
+        //System.out.println("GI1: " + tour.toString());
         //Randomly reorder the tour
         Collections.shuffle(tour);
+        //System.out.println("GI2: " + tour.toString());
     }
 
     //Sets a city in a certain position within a tour
@@ -42,6 +47,10 @@ public class Tour {
         // If the tours been aletered we need to reset the fitness and distance
         fitness = 0;
         time = 0;
+    }
+
+    public void removePoint(int tourPosition){
+        tour.remove(tourPosition);
     }
 
     //Gets a point form the tour
@@ -59,8 +68,12 @@ public class Tour {
 
     //Gets the total time of the tour
     public int getTime(){
+
+
+
         if (time == 0){
             int tourTime = 0;
+            //System.out.println(tour.toString());
             //Loop through our tour's points
             for (int pointIndex=0; pointIndex < tourSize(); pointIndex++){
                 //Get point we're traveling from

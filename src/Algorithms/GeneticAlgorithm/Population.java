@@ -2,21 +2,27 @@ package Algorithms.GeneticAlgorithm;
 
 import System.Map;
 
+import java.util.ArrayList;
+
 public class Population {
 
     private Tour[] tours;
     private Map map;
+    private ArrayList<String> points;
 
     //Construct population
-    public Population(int populationSize, boolean initialise, Map map){
+    public Population(int populationSize, boolean initialise, Map map, ArrayList<String> points){
         this.map = map;
+        this.points = points;
         tours = new Tour[populationSize];
         // If we need to initialise a population of tours do so
         if (initialise){
             // Loop and create individuals
             for (int i = 0; i < populationSize(); i++){
-                Tour newTour = new Tour(map);
+                Tour newTour = new Tour(map, points);
+                //System.out.println("New tourNuLL: " + newTour.toString());
                 newTour.generateIndividual();
+                //System.out.println("New tour: " + newTour.toString());
                 saveTour(i, newTour);
             }
         }

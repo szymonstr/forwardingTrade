@@ -25,6 +25,7 @@ public class Courier {
         }catch (FileException e) {
             logger.warning(e.getMessage());
         }
+        map.getPointsList().toString();
         if (running) {
 
             do {

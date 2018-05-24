@@ -11,7 +11,6 @@ import Algorithms.*;
 import Algorithms.GeneticAlgorithm.CalculationDistanceTime;
 import Algorithms.GeneticAlgorithm.GeneticAlgorithm;
 import Algorithms.GeneticAlgorithm.Population;
-import Algorithms.GeneticAlgorithm.TourManager;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -62,7 +61,7 @@ public class Route {
         prim.calculation(source);
         timePrim = prim.getSumTime();
         distancePrim = prim.getSumDistance();
-        //genetic();
+        genetic();
     }
 
     public ArrayList<Coordinates> getCoordinates() {
@@ -89,7 +88,7 @@ public class Route {
         return timePrim;
     }
 
-    /*
+
     public int getDistanceGenetic() {
         return distanceGenetic;
     }
@@ -99,44 +98,89 @@ public class Route {
     }
 
     private void genetic(){
-        geneticAlgorithm = new GeneticAlgorithm(map);
-        for (int i = 0; i<points.length; i++) {
-            TourManager.addPoint(points[i]);
-        }
 
-        Population pop = new Population(50, true, map);
-
-        pop = geneticAlgorithm.evolvePopulation(pop);
-        for (int i = 0; i<  100; i++){
-            pop = geneticAlgorithm.evolvePopulation(pop);
-        }
-
-        timeGenetic =0;
-        timeGenetic = pop.getFittest().getTime();
         CalculationDistanceTime calc = new CalculationDistanceTime(map);
-        timeGenetic += calc.calcTime(source, pop.getFittest().getPoint(0));
-        timeGenetic += calc.calcTime(pop.getFittest().getPoint(pop.getFittest().tourSize()-1), source);
 
-        distanceGenetic = 0;
+        ArrayList<String> GApoints = new ArrayList<String>();
+        GApoints.clear();
+        GApoints.add(source);
 
-        for (int i = pop.getFittest().tourSize() - 1; i > 0; i--){
-            distanceGenetic += calc.calcDistance(pop.getFittest().getPoint(i), pop.getFittest().getPoint(i-1));
+        for (int i = 0; i < points.length; i++){
+            String temp = points[i];
+            boolean test = false;
+            int k = 0;
+            for (int ii = 0; ii < GApoints.size(); ii++){
+                if (temp.equals(GApoints.get(ii))){
+                    k++;
+                }
+            }
+            if (k> 0){
+                test = false;
+            }else{
+                test = true;
+            }
+            if(test){
+                GApoints.add(temp);
+            }
         }
-        distanceGenetic += calc.calcDistance(source, pop.getFittest().getPoint(0));
-        distanceGenetic += calc.calcDistance(pop.getFittest().getPoint(pop.getFittest().tourSize()-1), source);
+
+
+        if (GApoints.size() > 2) {
+            geneticAlgorithm = new GeneticAlgorithm(map, GApoints);
+
+
+                //System.out.println(GApoints.toString());
+                Population pop = new Population(25, true, map, GApoints);    //populationSize: 50 <-Default
+
+                pop = geneticAlgorithm.evolvePopulation(pop);
+                for (int i = 0; i < 25; i++) {                         //i <100  <-Default
+                    pop = geneticAlgorithm.evolvePopulation(pop);
+                }
+
+                timeGenetic = 0;
+                timeGenetic = pop.getFittest().getTime();
+
+                //timeGenetic += 2 * calc.calcTime(source, pop.getFittest().getPoint(0));
+
+                distanceGenetic = 0;
+
+                for (int i = pop.getFittest().tourSize() - 1; i > 0; i--) {
+                    distanceGenetic += calc.calcDistance(pop.getFittest().getPoint(i), pop.getFittest().getPoint(i - 1));
+                }
+                //distanceGenetic += 2 * calc.calcDistance(source, pop.getFittest().getPoint(0));
+
+        }else if (GApoints.size()>1){
+
+
+            timeGenetic = 0;
+            timeGenetic = 2* calc.calcTime(GApoints.get(0), GApoints.get(1));
+
+
+            distanceGenetic = 0;
+            distanceGenetic = 2* calc.calcDistance(GApoints.get(0), GApoints.get(1));
+
+
+
+        }else {
+            timeGenetic = 0;
+            distanceGenetic = 0;
+        }
 
     }
-    */
+
 
     //prepare data to calculate the route
     private void PrepareData(){
-        this.dateTime = this.data[0];
-        this.points = new String[(data.length - 2)/2];
-        for (int i = 0; i < this.points.length; i++){
-            this.points[i] = this.data[2*i+2] +","+ this.data[2*i+3]; //this.points[i] = this.data[2*i+2].replace('(', ' ') +","+ this.data[2*i+3].replace(')',' ');
+        dateTime = data[0];
+        points = new String[(data.length - 2)/2];
+        for (int i = 0; i < points.length; i++){
+            points[i] = data[2 * i + 2] + "," + data[2 * i + 3];      //this.points[i] = this.data[2*i+2].replace('(', ' ') +","+ this.data[2*i+3].replace(')',' ');
             //this.points[i] = this.points[i].trim();
             //System.out.println(points[i]);
+
         }
+
+
     }
 
     //checking boxes coordinates with points on map

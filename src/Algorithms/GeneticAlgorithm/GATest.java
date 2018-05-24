@@ -4,6 +4,8 @@ package Algorithms.GeneticAlgorithm;
 import System.Exception.FileException;
 import System.Map;
 
+import java.util.ArrayList;
+
 public class GATest {
 
     private static Map map = new Map();
@@ -20,23 +22,51 @@ public class GATest {
 
 
 
-        String[] points = {"(1,3)", "(2,3)"};
-        for (int i = 0; i<points.length; i++) {
-            TourManager.addPoint(points[i]);
+        String[] destinations = {"(1,13)", "(10,12)", "(9,10)", "(8,17)", "(3,3)"};
+
+        ArrayList<String> points = new ArrayList<String>();
+        points.clear();
+        points.add(source);
+
+        for (int i = 0; i < destinations.length; i++){
+            String temp = destinations[i];
+            boolean test = false;
+            int k = 0;
+            for (int ii = 0; ii < points.size(); ii++){
+                if (temp.equals(points.get(ii))){
+                    k++;
+                }
+            }
+            if (k> 0){
+                test = false;
+            }else{
+                test = true;
+            }
+            if(test){
+                points.add(temp);
+            }
         }
 
-        Population pop = new Population(50, true, map);
+
+        Population pop = new Population(50, true, map, points);
         CalculationDistanceTime calc = new CalculationDistanceTime(map);
 
         int time = 0;
         time = pop.getFittest().getTime();
-        time += calc.calcTime(source, pop.getFittest().getPoint(0) );
-        time += calc.calcTime(pop.getFittest().getPoint(pop.getFittest().tourSize()-1), source);
+
+        int distance = 0;
+
+        for (int i = pop.getFittest().tourSize() - 1; i > 0; i--){
+            distance += calc.calcDistance(pop.getFittest().getPoint(i), pop.getFittest().getPoint(i-1));
+        }
+
 
 
         System.out.println("Initial Time: "+time);
 
-        GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(map);
+        System.out.println("Initial distance: " + distance);
+
+        GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(map, points);
 
         pop = geneticAlgorithm.evolvePopulation(pop);
         for (int i = 0; i<  100; i++){
@@ -47,8 +77,8 @@ public class GATest {
 
 
         time = pop.getFittest().getTime();
-        time += calc.calcTime(source, pop.getFittest().getPoint(0) );
-        time += calc.calcTime(pop.getFittest().getPoint(pop.getFittest().tourSize()-1), source);
+
+
 
         System.out.println("Finished!");
         System.out.println("Final time: " + time );
@@ -57,14 +87,14 @@ public class GATest {
 
         System.out.print("Final distance: ");
 
-        int distance = 0;
+        distance = 0;
 
         for (int i = pop.getFittest().tourSize() - 1; i > 0; i--){
             distance += calc.calcDistance(pop.getFittest().getPoint(i), pop.getFittest().getPoint(i-1));
         }
 
-        distance += calc.calcDistance(source, pop.getFittest().getPoint(0));
-        distance += calc.calcDistance(pop.getFittest().getPoint(pop.getFittest().tourSize() -1), source);
+
+
 
         System.out.println(distance);
 
