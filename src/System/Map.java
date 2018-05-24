@@ -1,3 +1,7 @@
+/**
+ * Changing map from file to usable data for algorithms
+ */
+
 package System;
 
 import System.Exception.*;
@@ -9,31 +13,23 @@ import java.util.Scanner;
 import java.util.logging.Logger;
 import java.lang.String;
 
-/**
- * Changing map from file to usable data for algorithms
- */
 
 public class Map {
 
-    //private HashMap<String,Integer> points = new HashMap<String, Integer>();
     private ArrayList<String> pointsList = new ArrayList<String>();
     private HashMap<String,Integer> adjacencyMatrix = new HashMap<String, Integer>();
     private ArrayList<Integer> sizes = new ArrayList<Integer>();
     private ArrayList<char[]> rows = new ArrayList<char[]>();
-    //private ArrayList<Connection> connections = new ArrayList<Connection>();
     private Scanner in = new Scanner(System.in);
     private String path = "./MAP.csv";
     private File file = new File(path);
     private Logger logger = Logger.getLogger(Map.class.getName());
     private BufferedReader bufferedReader;
     private String line = "";
-    //private String csvSplit = ",";
-    //private String [] tab;
     private String key;
     private String read;
     private boolean running;
     private boolean test;
-    //private char[] coordinates;
     private int x;
     private int y;
     private int k;
@@ -41,11 +37,6 @@ public class Map {
     private int width;
     private int size1;
     private int size2;
-    //private int number;
-    //private String pointSrc;
-    //private String pointDest;
-
-
 
     public ArrayList<String> getPointsList() {
         return pointsList;
@@ -54,16 +45,7 @@ public class Map {
     public HashMap<String, Integer> getAdjacencyMatrix() {
         return adjacencyMatrix;
     }
-    /*
-    public HashMap<String, Integer> getPoints() {
-        return points;
-    }
 
-    public ArrayList<Connection> getConnections() {
-
-        return connections;
-    }
-    */
 
     public boolean load() throws FileException {
 
@@ -173,7 +155,6 @@ public class Map {
                             for (int ii = 0; ii < rows.get(i).length - 1; ii++) {
 
                                 key = "(" + x + "," + y + ")-(" + x + "," + (y + 1) + ")";
-                                //System.out.println(key + "\t\t" + Character.getNumericValue(chars[i]));
                                 adjacencyMatrix.put(key, Character.getNumericValue(rows.get(i)[ii]));
                                 y++;
                             }
@@ -182,7 +163,6 @@ public class Map {
                             for (int ii = 0; ii < rows.get(i).length; ii++) {
                                 width = y;
                                 key = "(" + x + "," + y + ")-(" + (x + 1) + "," + y + ")";
-                                //System.out.println(key + "\t\t" + Character.getNumericValue(chars[i]));
                                 adjacencyMatrix.put(key, Character.getNumericValue(rows.get(i)[ii]));
                                 y++;
                             }
@@ -190,38 +170,15 @@ public class Map {
 
                     }
 
-                    //number = 0;
+
                     for (int x = 1; x <= row; x++) {
                         for (int y = 1; y <= width; y++) {
-                            //points.put("(" + x + "," + y + ")", number);
-                            //System.out.println("(" + x + "," + y + ")    " + number);
                             pointsList.add("(" + x + "," + y + ")");
-                           // number++;
                         }
                     }
-                    /*
-                    for (int i = 0; i < pointsList.size(); i++) {
-                        pointSrc = pointsList.get(i);
-                        for (int j = 0; j < pointsList.size(); j++) {
-                            pointDest = pointsList.get(j);
-                            if (adjacencyMatrix.get(pointSrc + "-" + pointDest) != null) {
-                                connections.add(new Connection(points.get(pointSrc), points.get(pointDest), adjacencyMatrix.get(pointSrc + "-" + pointDest)));
-                            }
-                        }
-                    }
-                    */
-                    /*
-                    System.out.println(adjacencyMatrix.size());
 
-
-                    System.out.println(connections.size());
-                    for (int i = 0; i < connections.size(); i++) {
-                        System.out.println(connections.get(i).getSrc() + "   " + connections.get(i).getDest() + "   " + connections.get(i).getWeight());
-                    }
-                    */
                 }
 
-                    //System.out.println("while");
             } else {
                 throw new FileException("Not found!");
             }

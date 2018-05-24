@@ -1,3 +1,8 @@
+/**
+ * This class is a description of driver
+ */
+
+
 package System;
 
 import java.util.ArrayList;
@@ -29,8 +34,8 @@ public class Driver {
         this.routes = routes;
     }
 
-    public void addRoute(String [] tab){
+    public void addRoute(String [] tab,Long epoch){
 
-        routes.add(new Route(tab, map));
+        routes.add(new Route(tab, map, epoch));
     }
 }

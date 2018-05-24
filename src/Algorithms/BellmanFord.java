@@ -1,9 +1,16 @@
+/**
+ * Bellman Ford algorithm
+ *
+ * greedy implementation
+ */
+
 package Algorithms;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import System.*;
+
 
 public class BellmanFord {
 
@@ -13,12 +20,10 @@ public class BellmanFord {
     private String firstSource;
     private String pointSrc;
     private String pointDest;
-    private int weight;
 
     private ArrayList<String> packages = new ArrayList<String>();
     private ArrayList<Connection> connections = new ArrayList<Connection>();
     private HashMap<String,Integer> point = new HashMap<String, Integer>();
-
 
     private int times[];
     private int previousPoint[];
@@ -47,6 +52,7 @@ public class BellmanFord {
         return sumTime;
     }
 
+    //calculates shortest paths from source to all points on the map
     public void calculation(String source){
         for (int i = 0; i < points.length; i++){
             packages.add(points[i]);
@@ -57,31 +63,14 @@ public class BellmanFord {
         }
         */
 
-        //courier always come back to the base to get new package
         sumTime = 0;
         sumDistance = 0;
-        /*
-        prepareData(source);
-        calcRoute(point.get(source));
-        //showArray();
-        time = 0;
-        for (int i = 0; i < packages.size(); i++) {
-            time = time + 2 * times[point.get(packages.get(i))];
-            previous = point.get(packages.get(i));
-            if (!packages.get(i).equals(source)) {
-                distance = 1;
-            }else{
-                distance = 0;
-            }
-            while (previousPoint[previous] != 0){
-                distance++;
-                previous = previousPoint[previous];
-            }
-            sumDistance += 2 *distance;
-        }
-        */
         firstSource = source;
 
+        //algorithms the nearest point form base to go to it
+        //next step: from this point to next nearest point
+        // and again, and again
+        //finally add route from base to last point
         while(packages.size()>0){
             time = Integer.MAX_VALUE;
             prepareData(source);
@@ -124,7 +113,6 @@ public class BellmanFord {
         }
         sumDistance += distance;
 
-        //sumTime = time;
         packages.clear();
         //System.out.println("Sum Time: " + sumTime + "\t\t Sum Distance: " +  sumDistance);
 
@@ -147,7 +135,7 @@ public class BellmanFord {
         }
         times[src] = 0;
 
-        // shortest path from src to any other vertex can
+        // shortest path from src to any other vertex
         for (int i = 1; i < V; ++i) {
             for (int j = 0; j < E; ++j) {
                 int u = connections.get(j).getSrc();
@@ -164,10 +152,11 @@ public class BellmanFord {
 
     }
 
+    //prepares date to useful form for algorithm
     private void prepareData(String source){
         point.clear();
         connections.clear();
-
+        //paginates vertex in graph
         number = 0;
         point.put(source, number);
         for (int i =  0; i< map.getPointsList().size(); i++){
@@ -179,6 +168,9 @@ public class BellmanFord {
                 point.put(map.getPointsList().get(i), number);
             }
         }
+
+        //creates arraylist of connetions in the graph
+        //connections includes to point and weight of edge between them
         for (int i = 0; i< map.getPointsList().size(); i++){
             pointSrc = map.getPointsList().get(i);
             for (int j = 0; j < map.getPointsList().size(); j++){
@@ -191,9 +183,11 @@ public class BellmanFord {
         }
     }
 
+    /*
     public void showArray() {
         System.out.println("Vertex   Distance from Source    Previous point ");
         for (int i=0; i<V; ++i)
             System.out.println(i+"\t\t"+times[i] + " \t\t" + previousPoint[i]);
     }
+    */
 }

@@ -1,7 +1,5 @@
 /**
- *
- * TODO
- * calculation average distance and average time per algorithm
+ * In this class reports are generating
  *
  */
 
@@ -16,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Logger;
+
 
 public class Report {
 
@@ -32,6 +31,7 @@ public class Report {
     private String line = new String();
     private ArrayList<Driver>drivers;
     private ArrayList<RoutesPerDay>routesPerDays = new ArrayList<RoutesPerDay>();
+    private ArrayList<String> logs;
     private boolean firstDate = true;
     private boolean added = false;
     private long averageDistanceBellmanFord;
@@ -44,9 +44,10 @@ public class Report {
     private long averageTimeGenetic;
     private long amountGenetic;
 
-    public Report(ArrayList<Driver> drivers) {
+    public Report(ArrayList<Driver> drivers, ArrayList<String> logs) {
 
         this.drivers = drivers;
+        this.logs = logs;
         this.generateRaport();
         this.writeToFile();
     }
@@ -71,7 +72,7 @@ public class Report {
                 dateTime = date.split(split);
 
                 added = false;
-
+                //counts routes out per day
                 for (int n = 0; n <routesPerDays.size() && added == false; n++ ){
                     if (routesPerDays.get(n).getDate().equals(dateTime[0])){
                         routesPerDays.get(n).setCount(routesPerDays.get(n).getCount() + 1);
@@ -83,7 +84,7 @@ public class Report {
                     routesPerDays.add(new RoutesPerDay(dateTime[0]));
                 }
 
-                //average route time and distance
+                //calculate average route time and distance of all routes
                 //BellmanFord
                 amountBellmanFord++;
                 averageDistanceBellmanFord += drivers.get(i).getRoutes().get(k).getDistanceBellmanFord();
@@ -128,12 +129,14 @@ public class Report {
             FileWriter fw = new FileWriter(file.getAbsoluteFile());
             BufferedWriter bw = new BufferedWriter(fw);
 
+            //prints routes per day
             bw.write("Routes per day:\r\n");
             for (int i = 0; i < routesPerDays.size(); i++) {
                 line = routesPerDays.get(i).getDate() + ": " + routesPerDays.get(i).getCount() + "routes.\r\n";
                 bw.write(line);
             }
 
+            //prints routes per driver
             bw.write("\r\n");
             bw.write("Routes per driver:\r\n");
             for (int i = 0; i < drivers.size(); i++){
@@ -141,21 +144,33 @@ public class Report {
                 bw.write(line);
             }
 
+            //print Bellman Ford algorithm results
             bw.write("\r\n");
             bw.write("BellmanFord\r\n");
             line = "Average Time: " + averageTimeBellmanFord + "\r\n" + "Average Distance: " + averageDistanceBellmanFord + "\r\n";
             bw.write(line);
 
-
+            //print Prim algorithm results
             bw.write("\r\n");
             bw.write("Prim\r\n");
             line = "Average Time: " + averageTimePrim + "\r\n" + "Average Distance: " + averageDistancePrim + "\r\n";
             bw.write(line);
 
+            //print Genetic algorithm results
             bw.write("\r\n");
             bw.write("Genetic Algorithm\r\n");
             line = "Average Time: " + averageTimeGenetic + "\r\n" + "Average Distance: " + averageDistanceGenetic + "\r\n";
             bw.write(line);
+
+            //If exist warnings print it at the bottom of report
+            if (logs.size()>0){
+                bw.write("\r\n");
+                bw.write("\r\n");
+                bw.write("Logs: \r\n");
+                for (int i= 0; i < logs.size(); i++) {
+                    bw.write(logs.get(i) + "\r\n");
+                }
+            }
 
             bw.close();
         } catch (IOException e) {

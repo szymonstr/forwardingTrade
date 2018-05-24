@@ -1,3 +1,7 @@
+/**
+ * Prim's algorithm test
+ */
+
 package Algorithms;
 
 
@@ -19,10 +23,14 @@ public class TestPrim{
         } catch (FileException e) {
             e.getMessage();
         }
+        //creates destinations points
         String[] points = {"(1,3)", "(2,3)"};
 
+        //calculates the distance and time
         prim = new Prim(map,points);
         prim.calculation("(1,1)");
+
+        //prints results
         System.out.println(prim.getSumTime() + " <- sumTime");
         System.out.println(prim.getSumDistance() + " <- sumDistance");
 

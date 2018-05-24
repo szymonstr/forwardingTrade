@@ -1,8 +1,13 @@
+/**
+ * Paths form base through all box coordinates
+ */
+
 package Algorithms.GeneticAlgorithm;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import System.Map;
+
 
 public class Tour {
 
@@ -23,11 +28,6 @@ public class Tour {
         }
     }
 
-    public Tour(ArrayList<String> tour, Map map, ArrayList<String> points){
-        this.map = map;
-        this.tour = tour;
-        this.points = points;
-    }
 
     //Create a random individual
     public void generateIndividual(){

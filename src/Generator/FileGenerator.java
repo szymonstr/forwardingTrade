@@ -1,3 +1,7 @@
+/**
+ * File generator prepares DATA.csv file and save in it generated data
+ */
+
 package Generator;
 
 import java.io.BufferedWriter;

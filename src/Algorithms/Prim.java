@@ -1,3 +1,10 @@
+/**
+ * Prim's algorithm
+ *
+ * this is a greedy algorithm
+ *
+ */
+
 package Algorithms;
 
 import java.util.*;
@@ -6,24 +13,23 @@ import java.io.*;
 import System.*;
 import System.Map;
 
-
-
 public class Prim
 {
-    // Number of vertices in the graph
+
     private Map map;
 
     private ArrayList<String> packages = new ArrayList<String>();
     private ArrayList<Connection> connections = new ArrayList<Connection>();
     private HashMap<String,Integer> point = new HashMap<String, Integer>();
 
-    private int V;
-    private int E;
-    private int number;
     private String[] points;
     private String pointSrc;
     private String pointDest;
     private String firstSurce;
+
+    private int V;
+    private int E;
+    private int number;
     private int sumDistance;
     private int sumTime;
     private int time;
@@ -31,21 +37,11 @@ public class Prim
     private int distance;
     private int distance_t;
     private int newSource;
-
-
     private int weight;
     private int x;
     private int y;
     private int graph[][];
     private int [] parent;
-
-    public int[][] getGraph() {
-        return graph;
-    }
-
-    public int getV() {
-        return V;
-    }
 
 
     public Prim(Map map, String[] points) {
@@ -61,6 +57,7 @@ public class Prim
         return sumTime;
     }
 
+    //prepares a graph, adjacency matrix is used to represent the connection in graph
     private void prepareGraph() {
         V = point.size();  // Number of vertices in graph
         E = connections.size();  // Number of edges in graph
@@ -81,11 +78,11 @@ public class Prim
         }
     }
 
-
+    //prepares date to useful form for algorithm
     private void prepareData(String source){
         point.clear();
         connections.clear();
-
+        //paginates vertex in graph
         number = 0;
         point.put(source, number);
 
@@ -98,6 +95,9 @@ public class Prim
                 point.put(map.getPointsList().get(i), number);
             }
         }
+
+        //creates arraylist of connetions in the graph
+        //connections includes to point and weight of edge between them
         for (int i = 0; i< map.getPointsList().size(); i++){
             pointSrc = map.getPointsList().get(i);
             for (int j = 0; j < map.getPointsList().size(); j++){
@@ -122,30 +122,14 @@ public class Prim
         }
         */
 
-        //prepareData(source);
-        //prepareGraph();
-        //primMST();
-
-        //courier always come back to the base to get new package
         sumTime = 0;
         sumDistance = 0;
-
-        /*
-        for(int i =0; i< packages.size(); i++){
-            int destination = point.get(packages.get(i));
-            while(destination !=0 ){
-                sumTime = sumTime + graph[destination][parent[destination]];
-                destination = parent[destination];
-                sumDistance++;
-            }
-
-       }
-        sumDistance = sumDistance *2;
-        sumTime = sumTime *2;
-        */
-
-
         firstSurce = source;
+
+        //algorithms the nearest point form base to go to it
+        //next step: from this point to next nearest point
+        // and again, and again
+        //finally add route from base to last point
        while (packages.size()>0){
           time = Integer.MAX_VALUE;
            prepareData(source);
@@ -187,9 +171,6 @@ public class Prim
        sumTime += time_t;
        sumDistance += distance_t;
 
-
-
-        //sumTime = time;
         packages.clear();
     }
 
@@ -209,6 +190,7 @@ public class Prim
         return min_index;
     }
 
+    /*
     // A utility function to print the constructed MST stored in
     // parent[]
     void printMST( int n, int graph[][]) {
@@ -218,6 +200,7 @@ public class Prim
             System.out.println(parent[i]+" - "+ i+"    "+
                     graph[i][parent[i]]);
     }
+    */
 
     // Function to construct and print MST for a graph represented
     //  using adjacency matrix representation

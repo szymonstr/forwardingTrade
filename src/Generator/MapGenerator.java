@@ -1,3 +1,7 @@
+/**
+ * Map generator prepares new map and saves it in MAP.csv file
+ */
+
 package Generator;
 
 import java.io.*;
@@ -16,7 +20,7 @@ public class MapGenerator {
 
     public void generate(int height, int width) { //int width, int height
 
-        //if file exists generator will delete it
+        //if MAP file exists generator will delete it
         if (file.exists()){
             file.delete();
             logger.warning("Old map was deleted!");
@@ -49,21 +53,7 @@ public class MapGenerator {
                 }
                 k++;
             }
-            /*
-            for (int y = 1; y<=height ; y++ ){
-                for (int x=1; x<=width ; x++){
-                    coordinates = "(" + x + "," + y + ")";  //coordinates of points
-                    if (x==width){
-                        line = line + coordinates + "\r\n";
-                    }else{
-                        line = line + coordinates + ",";
-                    }
-                    bw.write(line);  //write coordinates to file
-                    line = "";
-                }
 
-            }
-            */
             bw.close();
         }catch (IOException e){
             logger.warning(e.getMessage());

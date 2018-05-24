@@ -1,17 +1,20 @@
+/**
+ * Calculates short paths between two point for genetic algorithm
+ *
+ * To calculate this it uses Bellman Ford algorithm
+ *
+ * Crossover with two very good algorithm gives the best results
+ */
+
 package Algorithms.GeneticAlgorithm;
-
-
 
 import System.Map;
 import System.Connection;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
 public class CalculationDistanceTime {
-
-
-    //private HashMap<String,Integer> connections = new HashMap<String, Integer>();
 
     private ArrayList<Connection> connections = new ArrayList<Connection>();
     private HashMap<String,Integer> point = new HashMap<String, Integer>();
@@ -26,77 +29,35 @@ public class CalculationDistanceTime {
     private String pointSrc;
     private String pointDest;
 
-
-    private final String split = ",";
-    private String[] xy;
-    private int xFrom;
-    private int yFrom;
-    private int xDest;
-    private int yDest;
-    private int xDistance;
-    private int yDistance;
-
-
-
     private Map map;
-
 
     public CalculationDistanceTime(Map map) {
         this.map = map;
     }
 
+    //calculates time between two points
     public int calcTime(String fromPoint, String destinationPoint) {
         int time = 0;
-        //changePointsToCoordinates(fromPoint, destinationPoint);
-        //prepareData();
-        //xDistance = xDest - xFrom;
-        //yDistance = yDest - yFrom;
-
-
-
-        /*
-        if (xDistance > 0){
-            for (int x = xFrom; x< xDest; x++){
-                time += connections.get("("+ x + "," +yFrom + ")-(" + (x+1)+ "," + yFrom+")");
-            }
-
-        }else if (xDistance < 0){
-            for (int x = xDest; x < xFrom; x++)
-                time += connections.get("(" + x + "," + yDest + ")-(" + (x + 1) + "," + yDest + ")");
-        }
-        if (yDistance > 0){
-            for (int y = yFrom; y < yDest; y++){
-                time += connections.get("("+ xFrom + "," +y + ")-(" + xFrom+ "," + (y+1)+")");
-            }
-        }else if (yDistance < 0){
-            for (int y = yDest; y < yFrom; y++){
-                time += connections.get("("+ xFrom + "," +y + ")-(" + xFrom+ "," + (y+1)+")");
-            }
-        }
-        */
 
         //System.out.println(destinationPoint);
-
+        //prepares graph
         prepareData(fromPoint);
+        //calculates time from starting point to all other point in graph
         calcRoute(point.get(fromPoint));
-
-
+        //finds time to destination point
         time = times[point.get(destinationPoint)];
-
-
-
 
         return time;
     }
 
+    //calculates distance between two points
     public int calcDistance(String fromPoint, String destinationPoint) {
         int distance = 0;
-        //changePointsToCoordinates(fromPoint, destinationPoint);
-        //xDistance = xDest - xFrom;
-        //yDistance = yDest - yFrom;
-        //distance = Math.abs(xDistance) + Math.abs(yDistance);
+        //prepares graph
         prepareData(fromPoint);
+        //calculates distance from starting point to all other point in graph
         calcRoute(point.get(fromPoint));
+        //finds distance to destination point
         previous = point.get(destinationPoint);
         if (!destinationPoint.equals(fromPoint)) {
             distance = 1;
@@ -111,40 +72,6 @@ public class CalculationDistanceTime {
         return distance;
     }
 
-    /*
-    private void changePointsToCoordinates(String fromPoint, String destinationPoint) {
-        fromPoint = fromPoint.replace('(', ' ');
-        fromPoint = fromPoint.replace(')', ' ');
-        fromPoint = fromPoint.trim();
-        xy = fromPoint.split(split);
-        xFrom = Integer.parseInt(xy[0]);
-        yFrom = Integer.parseInt(xy[1]);
-        destinationPoint = destinationPoint.replace('(', ' ');
-        destinationPoint = destinationPoint.replace(')', ' ');
-        destinationPoint = destinationPoint.trim();
-        xy = destinationPoint.split(split);
-        xDest = Integer.parseInt(xy[0]);
-        yDest = Integer.parseInt(xy[1]);
-
-    }
-
-
-
-    private void prepareData(){
-
-       for (int i = 0; i< map.getPointsList().size(); i++){
-           pointSrc = map.getPointsList().get(i);
-            for (int j = 0; j < map.getPointsList().size(); j++){
-                pointDest = map.getPointsList().get(j);
-                if (map.getAdjacencyMatrix().get(pointSrc + "-" + pointDest) != null){
-                   connections.put(pointSrc + "-" + pointDest, map.getAdjacencyMatrix().get(pointSrc + "-" + pointDest));
-                   connections.put(pointDest + "-" + pointSrc, map.getAdjacencyMatrix().get(pointSrc + "-" + pointDest));
-                }
-            }
-       }
-    }
-
-    */
     private void calcRoute(int start) {
 
         int src = start;
@@ -162,7 +89,7 @@ public class CalculationDistanceTime {
         }
         times[src] = 0;
 
-        // shortest path from src to any other vertex can
+        // shortest path from src to any other vertex
         for (int i = 1; i < V; ++i) {
             for (int j = 0; j < E; ++j) {
                 int u = connections.get(j).getSrc();
@@ -174,15 +101,13 @@ public class CalculationDistanceTime {
                 }
             }
         }
-
-
-
     }
 
+    //prepares date to useful form for algorithm
     private void prepareData(String source){
         point.clear();
         connections.clear();
-
+        //paginates vertex in graph
         number = 0;
         point.put(source, number);
         for (int i =  0; i< map.getPointsList().size(); i++){
@@ -194,6 +119,9 @@ public class CalculationDistanceTime {
                 point.put(map.getPointsList().get(i), number);
             }
         }
+
+        //creates arraylist of connetions in the graph
+        //connections includes to point and weight of edge between them
         for (int i = 0; i< map.getPointsList().size(); i++){
             pointSrc = map.getPointsList().get(i);
             for (int j = 0; j < map.getPointsList().size(); j++){
@@ -205,11 +133,5 @@ public class CalculationDistanceTime {
             }
         }
     }
-
-
-
-
-
-
 }
 

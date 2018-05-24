@@ -1,12 +1,11 @@
+/**
+ * Main Generator class
+ */
+
 package Generator;
 
 import java.util.Scanner;
 
-
-
-/**
- * Main Generator class
- */
 
 public class DataGenerator {
 
@@ -17,7 +16,7 @@ public class DataGenerator {
 
     private static int width;
     private static int height;
-    private static int size;
+    //private static int size;
     private static int maxBoxes;
     private static boolean test;
     private static String adminDecision = new String();

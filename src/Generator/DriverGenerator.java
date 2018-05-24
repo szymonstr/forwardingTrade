@@ -9,6 +9,7 @@ public class DriverGenerator {
     private Random rand = new Random();
     private int number;
 
+    //generates drivers
     public String generate (){
         number = rand.nextInt(5) + 1;
 

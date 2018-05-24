@@ -1,9 +1,12 @@
+/**
+ * Genetic algorithm test
+ */
+
 package Algorithms.GeneticAlgorithm;
 
 
 import System.Exception.FileException;
 import System.Map;
-
 import java.util.ArrayList;
 
 public class GATest {
@@ -21,13 +24,13 @@ public class GATest {
         }
 
 
-
+        //creates destinations points
         String[] destinations = {"(1,13)", "(10,12)", "(9,10)", "(8,17)", "(3,3)"};
 
         ArrayList<String> points = new ArrayList<String>();
         points.clear();
         points.add(source);
-
+        //creates route
         for (int i = 0; i < destinations.length; i++){
             String temp = destinations[i];
             boolean test = false;
@@ -47,11 +50,12 @@ public class GATest {
             }
         }
 
-
+        //new Population
         Population pop = new Population(50, true, map, points);
         CalculationDistanceTime calc = new CalculationDistanceTime(map);
 
         int time = 0;
+        //shortest path between used genetic algorithm
         time = pop.getFittest().getTime();
 
         int distance = 0;
@@ -66,8 +70,10 @@ public class GATest {
 
         System.out.println("Initial distance: " + distance);
 
+
         GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(map, points);
 
+        //uses genetic algorithm on population
         pop = geneticAlgorithm.evolvePopulation(pop);
         for (int i = 0; i<  100; i++){
             pop = geneticAlgorithm.evolvePopulation(pop);
@@ -76,10 +82,8 @@ public class GATest {
 
 
 
+        //prints shortest path after used genetic algorithm
         time = pop.getFittest().getTime();
-
-
-
         System.out.println("Finished!");
         System.out.println("Final time: " + time );
         System.out.println("Solution:");
@@ -93,12 +97,7 @@ public class GATest {
             distance += calc.calcDistance(pop.getFittest().getPoint(i), pop.getFittest().getPoint(i-1));
         }
 
-
-
-
         System.out.println(distance);
-
-
 
     }
 }

@@ -1,3 +1,7 @@
+/**
+ * This class counts routes out per day
+ */
+
 package System;
 
 public class RoutesPerDay {

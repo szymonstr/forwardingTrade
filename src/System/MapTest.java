@@ -1,7 +1,12 @@
+/**
+ * Map Test
+ */
+
 package System;
 
 import System.Exception.FileException;
-import System.Map;
+
+//Test of loading map.
 
 import java.util.HashMap;
 

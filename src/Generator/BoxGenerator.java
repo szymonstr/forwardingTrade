@@ -10,6 +10,7 @@ public class BoxGenerator {
     private String coordinates = new String();
     private String load = new String();
 
+    //generates packages to delivery for drivers
     public String generate (int maxBoxes, int width, int height){
 
         load = "";

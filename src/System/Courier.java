@@ -1,3 +1,8 @@
+/**
+ * Main class of forwarding trade system
+ */
+
+
 package System;
 
 import System.Exception.FileException;
@@ -16,6 +21,7 @@ public class Courier {
     private static ArrayList<Driver> drivers = new ArrayList<Driver>();
     private static boolean test;
     private static int count;
+    private static int dataFileNumber =0;
     private static boolean running;
 
     public static void main(String args[]){
@@ -25,18 +31,16 @@ public class Courier {
         }catch (FileException e) {
             logger.warning(e.getMessage());
         }
-        map.getPointsList().toString();
-        if (running) {
 
+        if (running) {
             do {
-                data = new Data(drivers, count);
+                data = new Data(drivers, count, map);
                 try {
-                    data.load(map);
+                    data.load();
                 } catch (FileException e) {
                     logger.warning(e.getMessage());
                 }
-
-                System.out.println("Do you load a new DATA.txt file \ny - yes; other sign - no");
+                System.out.println("Do you want to load a new DATA.csv file \ny - yes; other sign - no");
                 adminDecision = in.nextLine();
                 adminDecision.toLowerCase();
                 if (adminDecision.equals("y")) {
@@ -49,7 +53,7 @@ public class Courier {
             } while (test);
 
             if (data.getDrivers().size() > 0) {
-                new Report(data.getDrivers());
+                new Report(data.getDrivers(), data.getLogs());
             }
         }
         System.out.println("Goodbye.");
