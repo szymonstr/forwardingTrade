@@ -89,23 +89,10 @@ public class Route {
         GApoints.add(SOURCE);
 
         // checking coordinates of destinations
-        //eliminates doubled (or more) destination points
+        //eliminates doubled (or more repeated) destination points
         for (int i = 0; i < points.length; i++){
-            String temp = points[i];
-            boolean test;
-            int k = 0;
-            for (int ii = 0; ii < GApoints.size(); ii++){
-                if (temp.equals(GApoints.get(ii))){
-                    k++;
-                }
-            }
-            if (k> 0){
-                test = false;
-            }else{
-                test = true;
-            }
-            if(test){
-                GApoints.add(temp);
+            if(!GApoints.contains(points[i])){
+                GApoints.add(points[i]);
             }
         }
 
