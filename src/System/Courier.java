@@ -20,8 +20,7 @@ public class Courier {
     private static String adminDecision = new String();
     private static ArrayList<Driver> drivers = new ArrayList<Driver>();
     private static boolean test;
-    private static int count;
-    private static int dataFileNumber =0;
+    private static int count = 0;
     private static boolean running;
 
     public static void main(String args[]){

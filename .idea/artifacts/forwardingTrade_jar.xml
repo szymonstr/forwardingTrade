@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="forwardingTrade:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/forwardingTrade_jar</output-path>
+    <root id="archive" name="forwardingTrade.jar">
+      <element id="module-output" name="forwardingTrade" />
+    </root>
+  </artifact>
+</component>

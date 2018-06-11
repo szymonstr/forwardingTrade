@@ -32,7 +32,6 @@ public class Report {
     private ArrayList<Driver>drivers;
     private ArrayList<RoutesPerDay>routesPerDays = new ArrayList<RoutesPerDay>();
     private ArrayList<String> logs;
-    private boolean firstDate = true;
     private boolean added = false;
     private long averageDistanceBellmanFord;
     private long averageTimeBellmanFord;

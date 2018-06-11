@@ -94,6 +94,7 @@ public class Data {
                             if (adminDecision.equals("y")){
                                 addRoutesToDrivers();
                                 logs.add("Warning! " + log + "\r\nAdministrator accepted this route." );
+                                epoch = Long.parseLong(tab[0]);
                             }else{
                                 logs.add("Warning! " + log + "\r\nAdministrator rejected this route." );
                             }

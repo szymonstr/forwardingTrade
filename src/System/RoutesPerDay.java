@@ -6,7 +6,7 @@ package System;
 
 public class RoutesPerDay {
 
-    private int count = 0;
+    private int count;
     private String date;
 
     public RoutesPerDay(String date) {

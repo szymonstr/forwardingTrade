@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Driver {
 
     private ArrayList<Route> routes = new ArrayList<Route>();
-    private String name = new String();
+    private String name;
     private Map map;
 
 
